@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import TextField from '@material-ui/core/TextField';
 import { Button  } from "@material-ui/core";
+import Alert from './Alert'
 import axios from 'axios'
 
 
@@ -11,6 +12,23 @@ function Form({signUp,setsignUp,setUserToken}) {
     const [password, setPassword] = useState("");
     const [tokenPhase, setTokenPhase] = useState(false);
     const [token, setToken] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [errorStatus, setErrorStatus] = useState(0);
+
+    //alert state variable
+    const [openAlert, setOpenAlert] = React.useState(false);
+
+    const handleShow = () => {
+    setOpenAlert(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
 
 
     function HandleLoginUI() {
@@ -56,7 +74,26 @@ function Form({signUp,setsignUp,setUserToken}) {
             setsignUp(false)
             setTokenPhase(true)
         })
-        .catch(error => console.log(error))
+        .catch(error =>{
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                let message=error.response.data.message,
+                status=error.response.status;
+                console.log(message);
+                console.log(status);
+                //set the error state variable
+                setErrorMessage(message);
+                setErrorStatus(status);
+                setOpenAlert(true);
+              }
+              else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+              }  
+        } )
     }
     else{
         //login process
@@ -73,7 +110,26 @@ function Form({signUp,setsignUp,setUserToken}) {
             setUserToken( response.data.token);
 
         })
-        .catch(error => console.log(error))
+        .catch(error =>{
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                let message=error.response.data.message,
+                status=error.response.status;
+                console.log(message);
+                console.log(status);
+                //set the error state variable
+                setErrorMessage(message);
+                setErrorStatus(status);
+                setOpenAlert(true);
+              }
+              else if (error.request) {
+              //  The request was made but no response was received
+              //  `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              //  http.ClientRequest in node.js
+               console.log(error.request);
+             }  
+        } )
     }
         
     }
@@ -97,7 +153,7 @@ function Form({signUp,setsignUp,setUserToken}) {
     }
 
 
-    return(
+    return(<>
         <form  style={{backgroundColor:"#eeffff"}} onSubmit={Authentication} >
         
          { !tokenPhase &&<>
@@ -126,6 +182,8 @@ function Form({signUp,setsignUp,setUserToken}) {
               </div>
           }
         </form>
+       { errorMessage.length!==0 && <Alert message={errorMessage} status={errorStatus} openAlert={openAlert} handleClose={handleClose}  handleShow={handleShow} ></Alert> }
+        </>
     )
     
 }
