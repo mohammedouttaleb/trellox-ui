@@ -11,6 +11,6 @@ form{
     cursor: pointer;
     color: royalblue;
 }
-h2{
+h2,h4,label{
     color: royalblue;
 }
