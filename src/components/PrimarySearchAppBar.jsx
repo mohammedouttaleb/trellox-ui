@@ -107,6 +107,9 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
 
   const [memberEmail, setmemberEmail] = useState("");
 
+
+  
+
   //alert state variable
   const [openAlert, setOpenAlert] = React.useState(false);
 
@@ -142,6 +145,7 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
         let emails= response.data.membersEmail
         setmembersEmails(emails);
       
+        setBoardName(response.data.boardName);
 
         setBoardExists(true)
 
@@ -201,6 +205,57 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
     setOpenAlert(true);
   };
 
+  const handleSearchBarInput=(event) => {
+ 
+    if(event.code === 'Enter'){
+
+      //send the boardName to backend to get its infos if it exists
+      
+      alert(event.target.value);
+
+      let boardName=event.target.value;
+
+      if(boardName.length!==0){
+
+
+        axios(
+          {
+            method:"GET",
+            url:"http://localhost:8080/getBoard?boardName="+boardName+"&userToken="+userToken
+          }
+        )
+        .then(
+          response =>{
+            console.log(response);
+            //add the board object to the state
+          setBoard(response.data);
+          console.log("******");
+          console.log(response.data);
+          console.log("******");
+          //set the membersemails
+          let emails= response.data.membersEmail
+          setmembersEmails(emails);
+        
+          setBoardName(response.data.boardName); 
+          setBoardExists(true)
+          }
+        )
+        .catch(
+          err =>{
+            console.log(err.response);
+
+            setOpenAlert(true);
+            setErrorMessage(err.response.data.message);
+            setErrorStatus(err.response.status);
+          }
+        )
+
+      }
+
+  
+    }
+  }
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -209,7 +264,19 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
           <Typography className={classes.title} variant="h6" noWrap>
           {(!boardExists || isCreateBoardDialogOpen) ? "Trellox":boardName } 
           </Typography>
-          {(boardExists && !isCreateBoardDialogOpen) && <Button variant="contained" color="primary">{ isBoardPrivate? <LockOutlinedIcon fontSize="small" ></LockOutlinedIcon>:<LockOpenOutlinedIcon fontSize="small" />} {isBoardPrivate ?"Private":"Public"}</Button>}
+          {
+            (boardExists && !isCreateBoardDialogOpen) && 
+            <Button 
+            variant="contained" 
+            color="primary"
+            
+            >
+            { isBoardPrivate?
+              <LockOutlinedIcon fontSize="small"  ></LockOutlinedIcon>:
+              <LockOpenOutlinedIcon fontSize="small"  />
+            } 
+            {isBoardPrivate ?"Private":"Public"}</Button>}
+          
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -221,20 +288,53 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              //onChange={(event)=> setPotentialBoardName(event.target.value) }
+              onKeyPress={ handleSearchBarInput }
             />
           </div>
-          <div style={{marginLeft:"50px",display:"flex"}}>
+          <div style={{marginLeft:"50px",display:"flex"}}  >
           {
-            (boardExists && membersEmails.length!==0) && membersEmails.map( (email,index) =>{ return( <Avatar key={index} style={{marginLeft:"5px"}} className={classes.orange}>{email.charAt(0)+email.charAt(1)}</Avatar>)} )
+            (boardExists && membersEmails.length!==0) && 
+            membersEmails.map(  (email,index) => 
+               {
+                  return( 
+                    <Avatar
+                     key={index} 
+                     style={{marginLeft:"5px"}} 
+                     className={classes.orange}
+                     title={email} >
+                     {email.charAt(0)+email.charAt(1)}
+                     </Avatar>
+                     )
+                  
+                } 
+                )
           }
-          {boardExists && <Button variant="contained" color="primary" style={{marginLeft:"20px"}} onClick={handleAddMemberOpen} >Invite</Button>}
+          {
+            boardExists &&
+             <Button 
+             variant="contained"
+              color="primary" 
+              style={{marginLeft:"20px"}}
+               onClick={handleAddMemberOpen} >
+               Invite
+               </Button>
+               }
           </div>
           <div className={classes.grow} />
           
           <div className={classes.sectionDesktop}>
-          <Button variant="contained" color="primary" style={{marginRight:"20px"}} onClick={handleClickOpen} >Create Board</Button>
 
-          <Avatar className={classes.orange}>{userEmail.charAt(0)+userEmail.charAt(1)}</Avatar>
+          <Button 
+          variant="contained" 
+          color="primary"
+           style={{marginRight:"20px"}}
+            onClick={handleClickOpen} 
+             >
+            Create Board
+            </Button>
+
+          <Avatar  className={classes.orange} title={userEmail} >{userEmail.charAt(0)+userEmail.charAt(1)}</Avatar>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -266,6 +366,7 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
         open={isAddMemberDialogOpen}
         setmemberEmail={setmemberEmail}
         handleAddBoardMember={handleAddBoardMember}
+        setIsAddMemberDialogOpen={setIsAddMemberDialogOpen}
          />
       }
       { errorMessage.length!==0 && 

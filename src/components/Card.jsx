@@ -2,9 +2,20 @@ import React from 'react'
 import Paper from '@material-ui/core/Paper';
 import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
+import UpdateCardDialog from './UpdateCardDialog';
 
 
-function Card({element,board,userToken,removeCard}) {
+function Card({element,board,userToken,removeCard,listIndex}) {
+
+  const [openCardDialog, setOpenCardDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenCardDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenCardDialog(false);
+  };
     
 
     function handleRemoveCard(){
@@ -35,7 +46,7 @@ function Card({element,board,userToken,removeCard}) {
     }
 
     return(
-       
+            <>
              <Paper 
              
               style={
@@ -46,13 +57,27 @@ function Card({element,board,userToken,removeCard}) {
                 display:"flex",
                 justifyContent:"space-between"
                 }
-                } >
+                } 
+                onClick={handleClickOpen}
+                >
                  <label style={{marginLeft:"5px",overflow:"hidden",textOverflow:"ellipsis"}}  ><h4>{element.cardName}</h4></label>
                 <CloseIcon  fontSize="medium" 
                   style={{marginTop:"20px"}}
                   onClick={handleRemoveCard}
                   />
               </Paper>
+                      {
+                        openCardDialog && 
+                      <UpdateCardDialog
+                       open={openCardDialog}
+                        handleClose={handleClose}
+                        card={element}
+                        boardName={board.boardName}
+                        userToken={userToken}
+                        listIndex={listIndex}
+                         />
+                        }
+              </>
     )
     
 }

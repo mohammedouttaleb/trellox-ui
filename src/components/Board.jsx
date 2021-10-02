@@ -82,7 +82,14 @@ export default function Board({board,userToken}) {
 
   function updateListAfterAddingCard(index,newList) {
     
-    setLists( prevList => { return [...prevList,prevList[index-1],newList,prevList[index+1],...prevList] } )
+    //setLists( prevList => { return [...prevList,prevList[index-1],newList,prevList[index+1],...prevList] } )
+    setLists(
+      prevList => {
+        let data=[...prevList]
+        data[index]=newList;
+        return data;
+      }
+    )
     console.log("###showing Updated-lists###");
     console.log(lists);
   }
@@ -151,7 +158,7 @@ export default function Board({board,userToken}) {
               lists.map((element,index) => (
                   <List 
                      element={element}
-                     index={index}
+                     listIndex={index}
                      key={index}
                      board={board}
                      userToken={userToken} 

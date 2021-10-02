@@ -8,14 +8,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 
-export default function AddMemberDialogForm({open,handleAddBoardMember,setmemberEmail}) {
+export default function AddMemberDialogForm({open,handleAddBoardMember,setmemberEmail,setIsAddMemberDialogOpen}) {
  
 
   
 
   return (
     <div>
-      <Dialog open={open}  aria-labelledby="form-dialog-title"  >
+      <Dialog open={open} onClose={()=> setIsAddMemberDialogOpen(false) } aria-labelledby="form-dialog-title"  >
         <DialogTitle id="form-dialog-title">Invite to board</DialogTitle>
         <DialogContent>
           <TextField

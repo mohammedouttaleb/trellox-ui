@@ -13,7 +13,7 @@ import SimpleMenu from './SimpleMenu';
 
 
 
-function List({element,board,userToken,removeList,getListIndexes,swapTwoLists,index,updateListAfterAddingCard}) {
+function List({element,board,userToken,removeList,getListIndexes,swapTwoLists,listIndex,updateListAfterAddingCard}) {
 
 
     const [paperStyle, setPaperStyle] = useState({ height:80 , width: 240,backgroundColor:"#EEEEEE"});
@@ -80,19 +80,18 @@ function List({element,board,userToken,removeList,getListIndexes,swapTwoLists,in
           console.log("=====myList=====");
           let myList=myListArray[0];
           console.log(myList);
-           //set the new list
-           console.log("=====myList-state=====");
-           updateListAfterAddingCard(index,myList);
-         let newCardList=myList.cardList;
+                 let newCardList=myList.cardList;
          console.log("=====myCardList=====");
          console.log(newCardList);
-          setCards( prevCardList =>{
-                 console.log(prevCardList);
-                 return [ ...newCardList]
-          }   
-          )
+         console.log("=====PrevCardList=====");
+          console.log(cards);
+          setCards( newCardList);
           console.log("=====myCardList-state=====");
           console.log(cards);
+          //set the new list
+          console.log("=====myList-state=====");
+          updateListAfterAddingCard(listIndex,myList);
+  
          
         }
       )
@@ -177,7 +176,7 @@ function List({element,board,userToken,removeList,getListIndexes,swapTwoLists,in
                  moveList={moveList} 
                  getListIndexes={getListIndexes} 
                  swapTwoLists={swapTwoLists}
-                 currentIndex={index}
+                 currentIndex={listIndex}
                  hideMoveListMenue={hideMoveListMenue}
                   />
              }
@@ -219,7 +218,7 @@ function List({element,board,userToken,removeList,getListIndexes,swapTwoLists,in
            
                   
             { (cards!==null &&cards.length!==0) &&
-              cards.map((element,index) => (  <Card element={element} key={index} board={board} userToken={userToken} removeCard={removeCard} /> ))
+              cards.map((element,index) => (  <Card element={element} key={index} listIndex={listIndex} board={board} userToken={userToken} removeCard={removeCard} /> ))
           }
            
             
