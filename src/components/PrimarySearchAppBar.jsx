@@ -103,7 +103,7 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
   const [isAddMemberDialogOpen, setIsAddMemberDialogOpen] = useState(false);
   const [membersEmails, setmembersEmails] = useState([])
   const [boardName, setBoardName] = useState("");
-  const [isBoardPrivate, setIsBoardPrivate] = useState(false);
+  const [isBoardPrivate, setIsBoardPrivate] = useState(true);
 
   const [memberEmail, setmemberEmail] = useState("");
 
@@ -146,6 +146,8 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
         setmembersEmails(emails);
       
         setBoardName(response.data.boardName);
+
+        setIsBoardPrivate(!response.data.isVisible)
 
         setBoardExists(true)
 
@@ -237,6 +239,12 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
           setmembersEmails(emails);
         
           setBoardName(response.data.boardName); 
+          console.log("Visibility State");
+          console.log(response.data.isVisible);
+          setIsBoardPrivate(!response.data.isVisible)
+          console.log("ispRIVATE State");
+          console.log(isBoardPrivate);
+       
           setBoardExists(true)
           }
         )
@@ -256,6 +264,34 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
     }
   }
 
+  const handleChangeBoardVisibility=() => {
+    
+    console.log(isBoardPrivate)
+    //change the UI
+  
+    setIsBoardPrivate( prevbool => !prevbool );
+     console.log("isboardprivate");
+     console.log(isBoardPrivate);
+    //make the API call
+    let isVisible=!isBoardPrivate;
+    axios(
+      {
+        method:"PUT",
+        url:"http://localhost:8080/changeVisibility/"+boardName+"?isVisible="+isVisible +"&userToken="+userToken
+      }
+    )
+    .then(
+      resp => {
+        console.log(resp.data);
+     
+      }
+    )
+    .catch(
+      err => {
+        console.log( err.response);
+      }
+    )
+  }
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -269,7 +305,7 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
             <Button 
             variant="contained" 
             color="primary"
-            
+            onClick={handleChangeBoardVisibility}
             >
             { isBoardPrivate?
               <LockOutlinedIcon fontSize="small"  ></LockOutlinedIcon>:

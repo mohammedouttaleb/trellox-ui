@@ -58,9 +58,9 @@ function Card({element,board,userToken,removeCard,listIndex}) {
                 justifyContent:"space-between"
                 }
                 } 
-                onClick={handleClickOpen}
+                
                 >
-                 <label style={{marginLeft:"5px",overflow:"hidden",textOverflow:"ellipsis"}}  ><h4>{element.cardName}</h4></label>
+                 <label  onClick={handleClickOpen}   style={{marginLeft:"5px",overflow:"hidden",textOverflow:"ellipsis"}}  ><h4>{element.cardName}</h4></label>
                 <CloseIcon  fontSize="medium" 
                   style={{marginTop:"20px"}}
                   onClick={handleRemoveCard}

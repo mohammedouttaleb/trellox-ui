@@ -35,7 +35,7 @@ export default function Board({board,userToken}) {
   const [addListProcess, setaddListProcess] = useState(false);
 
 
-  console.log(board.lists);
+ 
 
   function HandleAddList() {
 
@@ -104,14 +104,16 @@ export default function Board({board,userToken}) {
       let data=[...prevlist];
       console.log("----previouslist---");
       console.log(data);
+      console.log("-------");
       let temp=data[index1];
       data[index1]=data[index2];
       data[index2]=temp;
       console.log("----Newlist---");
       console.log(data);
+      console.log("-------");
       return data;
     });
-    console.log(lists);
+    
   }
 
  

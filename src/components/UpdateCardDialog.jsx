@@ -12,8 +12,9 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import Alert from './Alert';
 import CloseIcon from '@material-ui/icons/Close';
-
-
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
+import CommentComponent from './CommentComponent'
 
 
 
@@ -47,6 +48,10 @@ export default function UpdateCardDialog({open,handleClose,card,boardName,userTo
    const [commentList, setCommentList] = useState(card.comments)
 
    const [comment, setComment] = useState("")
+
+
+
+
 
 
    //alert state variable
@@ -152,10 +157,12 @@ export default function UpdateCardDialog({open,handleClose,card,boardName,userTo
   return (
 
     <div>
-    <Dialog open={open} onClose={handleClose} fullWidth={"md"} >
-      <DialogTitle>{card.cardName}</DialogTitle>
-      <DialogContent>
+    <Dialog open={open} onClose={handleClose} fullWidth={"md"}   >
+      <DialogTitle style={{backgroundColor:"#EEEEEE"}} >{card.cardName}</DialogTitle>
+      <Divider orientation="horizontal"   />
+      <DialogContent style={{backgroundColor:"#EEEEEE"}} >
       <DialogTitle>Members</DialogTitle>
+      
        <div style={{display:"flex"}} >
         {
           !addMemeberFormOpen ? 
@@ -194,19 +201,19 @@ export default function UpdateCardDialog({open,handleClose,card,boardName,userTo
        <div style={{display:"flex"}} >
          {
           emails!=null &&
-          emails.map(   (email,index) =>{ return( <Avatar key={index}  title={email} style={{marginLeft:"5px"}} sx={{ width: 12, height: 12 }}  className={classes.purple}>{email.charAt(0)+email.charAt(1)}</Avatar>)}   )
+          emails.map(   (email,index) =>{ return( <Avatar key={index}  title={email} style={{marginLeft:"5px"}} sx={{ width: 12, height: 12 }}  className={classes.orange}>{email.charAt(0)+email.charAt(1)}</Avatar>)}   )
           }
        </div>
        </div>
        <div>
-         <DialogTitle>Comments</DialogTitle>
+         <DialogTitle style={{marginTop:"5px"}} >Comments</DialogTitle>
          {
            !addCommentProcess ? 
            <TextField 
             id="outlined-basic"
              label="Write a Comment......"
               variant="outlined"
-               style={{width:"95%",marginTop:"5px",marginLeft:"5px"}}
+               style={{width:"100%",marginTop:"5px",marginLeft:"5px"}}
                onClick={ ()=> setAddCommentProcess(true)}
                disabled
                 />:
@@ -215,7 +222,7 @@ export default function UpdateCardDialog({open,handleClose,card,boardName,userTo
             id="outlined-basic"
              label="Write a Comment......"
               variant="outlined"
-               style={{width:"95%",marginTop:"5px",marginLeft:"5px"}}
+               style={{width:"100%",marginTop:"5px",marginLeft:"5px"}}
                
                onChange={(event)=> setComment(event.target.value) }
                 />
@@ -237,21 +244,15 @@ export default function UpdateCardDialog({open,handleClose,card,boardName,userTo
          }
          {
            commentList!=null &&
-            commentList.map( 
-               (commentElement,index) =>   <TextField 
-            id="outlined-basic"
-            key={index}
-             label={commentElement}
-              variant="outlined"
-               style={{width:"95%",marginTop:"5px",marginLeft:"5px"}}
-              // onClick={ ()=> setAddCommentProcess(true)}
-               disabled
-                />  )    
+           <Stack spacing={2}   >
+            {commentList.map(  (commentElement,index)  => <CommentComponent key={index} commentElement={commentElement} classes={classes}   />   ) }
+           </Stack>
+
          }
          
        </div>
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{backgroundColor:"#EEEEEE"}} >
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
       { errorMessage.length!==0 && 
