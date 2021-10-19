@@ -60,7 +60,12 @@ function Card({element,board,userToken,removeCard,listIndex}) {
                 } 
                 
                 >
-                 <label  onClick={handleClickOpen}   style={{marginLeft:"5px",overflow:"hidden",textOverflow:"ellipsis"}}  ><h4>{element.cardName}</h4></label>
+                 <label  
+                 onClick={handleClickOpen} 
+                   style={{marginLeft:"5px",overflow:"hidden",textOverflow:"ellipsis"}} 
+                    >
+                    <h4>{element.cardName}</h4>
+                  </label>
                 <CloseIcon  fontSize="medium" 
                   style={{marginTop:"20px"}}
                   onClick={handleRemoveCard}

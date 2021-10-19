@@ -103,7 +103,7 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
   const [isAddMemberDialogOpen, setIsAddMemberDialogOpen] = useState(false);
   const [membersEmails, setmembersEmails] = useState([])
   const [boardName, setBoardName] = useState("");
-  const [isBoardPrivate, setIsBoardPrivate] = useState(true);
+  const [isBoardPrivate, setIsBoardPrivate] = useState(false);
 
   const [memberEmail, setmemberEmail] = useState("");
 
@@ -135,12 +135,9 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
     })
     .then(
       response =>{ 
-        console.log(response);
+     
           //add the board object to the state
         setBoard(response.data);
-        console.log("******");
-        console.log(response.data);
-        console.log("******");
         //set the membersemails
         let emails= response.data.membersEmail
         setmembersEmails(emails);
@@ -186,8 +183,6 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
           console.log(err.response);
           let message=err.response.data.message,
           status=err.response.status;
-          console.log(message);
-          console.log(status);
           //set the error state variable
           setErrorMessage(message);
           setErrorStatus(status);
@@ -231,19 +226,12 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
             console.log(response);
             //add the board object to the state
           setBoard(response.data);
-          console.log("******");
-          console.log(response.data);
-          console.log("******");
           //set the membersemails
           let emails= response.data.membersEmail
           setmembersEmails(emails);
         
           setBoardName(response.data.boardName); 
-          console.log("Visibility State");
-          console.log(response.data.isVisible);
           setIsBoardPrivate(!response.data.isVisible)
-          console.log("ispRIVATE State");
-          console.log(isBoardPrivate);
        
           setBoardExists(true)
           }
@@ -269,28 +257,25 @@ export default function PrimarySearchAppBar({userEmail,userToken,boardExists,set
     console.log(isBoardPrivate)
     //change the UI
   
-    setIsBoardPrivate( prevbool => !prevbool );
-     console.log("isboardprivate");
-     console.log(isBoardPrivate);
-    //make the API call
-    let isVisible=!isBoardPrivate;
-    axios(
-      {
+    setIsBoardPrivate( prevbool => !prevbool ,()=>{
+      console.log(isBoardPrivate)
+       //make the API call
+      let isVisible=!isBoardPrivate;
+      axios(
+       {
         method:"PUT",
         url:"http://localhost:8080/changeVisibility/"+boardName+"?isVisible="+isVisible +"&userToken="+userToken
-      }
-    )
-    .then(
-      resp => {
-        console.log(resp.data);
-     
-      }
+       }
+      )
+     .then(
+       resp =>      console.log(resp.data)
     )
     .catch(
-      err => {
-        console.log( err.response);
-      }
+      err =>   console.log( err.response)
+      
     )
+    }  );
+   
   }
   return (
     <div className={classes.grow}>

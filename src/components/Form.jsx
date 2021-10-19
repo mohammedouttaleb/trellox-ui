@@ -80,8 +80,6 @@ function Form({signUp,setsignUp,setUserToken,setUserEmail}) {
                 // that falls out of the range of 2xx
                 let message=error.response.data.message,
                 status=error.response.status;
-                console.log(message);
-                console.log(status);
                 //set the error state variable
                 setErrorMessage(message);
                 setErrorStatus(status);
@@ -118,8 +116,6 @@ function Form({signUp,setsignUp,setUserToken,setUserEmail}) {
                 // that falls out of the range of 2xx
                 let message=error.response.data.message,
                 status=error.response.status;
-                console.log(message);
-                console.log(status);
                 //set the error state variable
                 setErrorMessage(message);
                 setErrorStatus(status);

@@ -92,14 +92,9 @@ export default function UpdateCardDialog({open,handleClose,card,boardName,userTo
         response => {
           console.log(response.data);
           let mylist=response.data.lists[listIndex];
-       console.log("Indexxxxxx "+listIndex);
          let myCard= mylist.cardList.filter( card => card.cardId===cardId  );
-         console.log("&&data&&");
-         console.log(myCard[0].membersEmails);
          setEmails(myCard[0].membersEmails);
          card.membersEmails=myCard[0].membersEmails;
-         console.log("===state check=====");
-         console.log(emails);
         }
       )
       .catch(
@@ -137,9 +132,8 @@ export default function UpdateCardDialog({open,handleClose,card,boardName,userTo
         response =>{
           console.log(response.data);
           let mylist=response.data.lists[listIndex];
-       console.log("Indexxxxxx "+listIndex);
+  
          let myCard= mylist.cardList.filter( card => card.cardId===cardId  );
-         console.log("&&data&&");
          console.log(myCard[0].comments);
          setCommentList(myCard[0].comments)
          card.comments=myCard[0].comments;

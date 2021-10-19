@@ -90,8 +90,7 @@ export default function Board({board,userToken}) {
         return data;
       }
     )
-    console.log("###showing Updated-lists###");
-    console.log(lists);
+   
   }
 
   function getListIndexes() {
@@ -102,15 +101,9 @@ export default function Board({board,userToken}) {
   function swapTwoLists(index1,index2) {
     setLists(prevlist =>{
       let data=[...prevlist];
-      console.log("----previouslist---");
-      console.log(data);
-      console.log("-------");
       let temp=data[index1];
       data[index1]=data[index2];
       data[index2]=temp;
-      console.log("----Newlist---");
-      console.log(data);
-      console.log("-------");
       return data;
     });
     

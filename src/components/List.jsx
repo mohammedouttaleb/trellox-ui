@@ -77,19 +77,13 @@ function List({element,board,userToken,removeList,getListIndexes,swapTwoLists,li
          
            endAddCardProcess();
           let myListArray= response.data.lists.filter( list => list.listId===listId );
-          console.log("=====myList=====");
+         
           let myList=myListArray[0];
           console.log(myList);
                  let newCardList=myList.cardList;
-         console.log("=====myCardList=====");
-         console.log(newCardList);
-         console.log("=====PrevCardList=====");
           console.log(cards);
           setCards( newCardList);
-          console.log("=====myCardList-state=====");
-          console.log(cards);
           //set the new list
-          console.log("=====myList-state=====");
           updateListAfterAddingCard(listIndex,myList);
   
          
