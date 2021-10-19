@@ -1,4 +1,4 @@
 # Trellox-UI
 
-This project is my custom trello user interface called "trellox".
+This project called "trellox" is my custom user interface of the famous projet management application Trello buillt with ReactJS .
 
